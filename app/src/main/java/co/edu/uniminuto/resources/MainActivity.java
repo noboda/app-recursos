@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        initView();
+        initViews();
         initCamera();
-        eventsClick();
+        setupListeners();
 
         batteryFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(broReceiver, batteryFilter);
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Eventos clicks
-    private void eventsClick() {
+    private void setupListeners() {
         onFlash.setOnClickListener(this::onLight);
         offFlash.setOnClickListener(this::offLight);
         btnGuardarArchivo.setOnClickListener(this::saveFile);
@@ -187,8 +187,8 @@ public class MainActivity extends AppCompatActivity {
         btnCamera.setOnClickListener(this::openCameraActivity);
     }
 
-    // Inicializacion de vistas
-    private void initView() {
+    // Inicializador
+    private void initViews() {
         this.tvAndroidVersionLB = findViewById(R.id.tvAndroidVersionLB);
         this.tvBatteryLevel = findViewById(R.id.tvBatteryLevel);
         this.pbBattery = findViewById(R.id.pbBattery);

@@ -38,6 +38,8 @@ import java.util.Set;
 public class MainActivityBluetooth extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_BLUETOOTH_PERMISSIONS = 2;
+
+    // UI
     private BluetoothAdapter bluetoothAdapter;
     private TextView tvBluetoothStatus;
     private Button btnToggleBluetooth;
@@ -63,10 +65,10 @@ public class MainActivityBluetooth extends AppCompatActivity {
         initViews();
         activityResult();
         bluetoothSetup();
-        eventsClick();
+        setupListeners();
     }
 
-
+    // Activity Result
     private void activityResult () {
         btLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -82,6 +84,7 @@ public class MainActivityBluetooth extends AppCompatActivity {
     }
 
 
+    // Configurar Bluetooth
     private void bluetoothSetup() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Log.d("Bluetooth", "Adapter: " + bluetoothAdapter);
@@ -94,12 +97,6 @@ public class MainActivityBluetooth extends AppCompatActivity {
             Log.d("Bluetooth", "Bluetooth soportado, estado: " + bluetoothAdapter.isEnabled());
             updateBluetoothStatus();
         }
-    }
-
-    // Eventos click
-    private void eventsClick() {
-        btnToggleBluetooth.setOnClickListener(v -> toggleBluetooth());
-        btnListDevices.setOnClickListener(v -> checkPermissionsAndListDevices());
     }
 
     // Activar/Desactivar Bluetooth
@@ -156,6 +153,7 @@ public class MainActivityBluetooth extends AppCompatActivity {
         }
     }
 
+    // Solicitar permisos de Bluetooth
     private void requestBluetoothPermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{
@@ -188,10 +186,10 @@ public class MainActivityBluetooth extends AppCompatActivity {
         } else {
             deviceList.add("No hay dispositivos emparejados");
         }
-
         deviceAdapter.notifyDataSetChanged();
     }
 
+    // Actualizar estado de Bluetooth
     private void updateBluetoothStatus() {
         if (bluetoothAdapter == null) return;
 
@@ -203,7 +201,6 @@ public class MainActivityBluetooth extends AppCompatActivity {
             btnToggleBluetooth.setText("Activar Bluetooth");
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -219,6 +216,12 @@ public class MainActivityBluetooth extends AppCompatActivity {
                 Toast.makeText(this, "Los permisos son necesarios para esta función", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    // Eventos click
+    private void setupListeners() {
+        btnToggleBluetooth.setOnClickListener(v -> toggleBluetooth());
+        btnListDevices.setOnClickListener(v -> checkPermissionsAndListDevices());
     }
 
     // Inicializador

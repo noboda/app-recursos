@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,6 +25,7 @@ public class MainActivityCamera extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CAMERA_PERMISSION = 100;
 
+    // UI
     private ImageView ivPhoto;
     private Button btnTakePhoto;
 
@@ -36,21 +39,11 @@ public class MainActivityCamera extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        initView();
+        initViews();
         setupListeners();
     }
 
-    // Eventos click
-    private void setupListeners() {
-        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkCameraPermissionAndTakePhoto();
-            }
-        });
-    }
-
-    // Permisos
+    // Verificar permisos y tomar foto
     private void checkCameraPermissionAndTakePhoto() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -69,8 +62,6 @@ public class MainActivityCamera extends AppCompatActivity {
         }
     }
 
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -80,7 +71,6 @@ public class MainActivityCamera extends AppCompatActivity {
         }
     }
 
-    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
@@ -93,8 +83,18 @@ public class MainActivityCamera extends AppCompatActivity {
         }
     }
 
+    // Eventos click
+    private void setupListeners() {
+        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkCameraPermissionAndTakePhoto();
+            }
+        });
+    }
+
     // Inicializador
-    private void initView () {
+    private void initViews () {
         this.ivPhoto = findViewById(R.id.ivPhoto);
         this.btnTakePhoto = findViewById(R.id.btnTakePhoto);
     }
