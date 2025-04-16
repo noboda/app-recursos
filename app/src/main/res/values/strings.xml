@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Resources</string>
+    <string name="tvTitulo">Varios Recursos</string>
+    <string name="tvVersionAndroid">1. Android Version</string>
+    <string name="tvBluet">2. Flashlight</string>
+    <string name="btnActivar">On</string>
+    <string name="btnDesactivar">Off</string>
+    <string name="tvBatteryLevel">3. Nivel de bateria</string>
+    <string name="pbBattery"></string>
+    <string name="tvAlmacenamiento">4. Almacenar</string>
+    <string name="etNombreArchivo">Nombre del archivo</string>
+    <string name="btnGuardarArchivo">Guardar Archivo</string>
+    <string name="tvConection">5. Conexion</string>
+    <string name="btnBluetooth">Probar Bluetooth</string>
+    <string name="btnCamera">Probar Camara</string>
+
+    <!-- Activity Bluetooth -->
+    <string name="tvBluetoothStatus">Estado Bluetooth:</string>
+    <string name="btnToggleBluetooth">Activar/Desactivar Bluetooth</string>
+    <string name="btnListDevices">Dispositivos Emparejados</string>
+    <string name="tvPairedDevices">Dispositivos emparejados:</string>
+
+    <!-- Activity Camera -->
+    <string name="btnTakePhoto">Tomar Foto</string>
+
+</resources>
