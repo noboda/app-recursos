@@ -104,9 +104,23 @@ public class MainActivityBluetooth extends AppCompatActivity {
 
     // Activar/Desactivar Bluetooth
     private void toggleBluetooth() {
-        if (bluetoothAdapter == null) return;
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth no disponible", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (!bluetoothAdapter.isEnabled()) {
+            // Activar Bluetooth
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                            != PackageManager.PERMISSION_GRANTED) {
+                requestBluetoothPermissions();
+            } else {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                btLauncher.launch(enableBtIntent);
+            }
+        } else {
+            // Desactivar Bluetooth
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -114,16 +128,22 @@ public class MainActivityBluetooth extends AppCompatActivity {
                     return;
                 }
             }
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            btLauncher.launch(enableBtIntent);
-        } else {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
-                    != PackageManager.PERMISSION_GRANTED) {
+
+            try {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    boolean disableResult = bluetoothAdapter.disable();
+                    if (disableResult) {
+                        Toast.makeText(this, "Bluetooth desactivado", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Error al desactivar Bluetooth", Toast.LENGTH_SHORT).show();
+                    }
+                    updateBluetoothStatus();
+                }
+            } catch (SecurityException e) {
+                Toast.makeText(this, "Permiso denegado: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 requestBluetoothPermissions();
-                return;
             }
-            bluetoothAdapter.disable();
-            updateBluetoothStatus();
         }
     }
 
@@ -190,9 +210,13 @@ public class MainActivityBluetooth extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_BLUETOOTH_PERMISSIONS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                listPairedDevices();
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
+                    toggleBluetooth();
+                } else {
+                    listPairedDevices();
+                }
             } else {
-                Toast.makeText(this, "Se necesitan permisos de Bluetooth", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Los permisos son necesarios para esta función", Toast.LENGTH_SHORT).show();
             }
         }
     }
