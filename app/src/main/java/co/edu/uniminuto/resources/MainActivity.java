@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btnGuardarArchivo;
     private Button btnBluetooth;
     private Button btnCamera;
-
-    // Servicios
     private CameraManager cameraManager;
     private String cameraId;
     private ConnectivityManager conexion;
